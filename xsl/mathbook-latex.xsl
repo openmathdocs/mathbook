@@ -21,7 +21,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 
 <!-- Identify as a stylesheet -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-    xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
     xmlns:date="http://exslt.org/dates-and-times"
     extension-element-prefixes="date"
 >
@@ -357,15 +357,20 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:text>%% Used for units and number formatting&#xa;</xsl:text>
         <xsl:text>\usepackage[per-mode=fraction]{siunitx}&#xa;</xsl:text>
         <xsl:text>%% Common non-SI units&#xa;</xsl:text>
-        <xsl:text>\DeclareSIUnit\degreeFahrenheit{\SIUnitSymbolDegree{F}}&#xa;</xsl:text> 
-        <xsl:text>\DeclareSIUnit\fahrenheit{\degreeFahrenheit}&#xa;</xsl:text>                       
-        <xsl:text>\DeclareSIUnit\pound{lb}&#xa;</xsl:text>
-        <xsl:text>\DeclareSIUnit\foot{ft}&#xa;</xsl:text>
-        <xsl:text>\DeclareSIUnit\inch{in}&#xa;</xsl:text>
-        <xsl:text>\DeclareSIUnit\yard{yd}&#xa;</xsl:text>
-        <xsl:text>\DeclareSIUnit\mile{mi}&#xa;</xsl:text>
-        <xsl:text>\DeclareSIUnit\mileperhour{mph}&#xa;</xsl:text>
-        <xsl:text>\DeclareSIUnit\gallon{gal}&#xa;</xsl:text>
+        <xsl:for-each select="document('mathbook-units.xsl')//base[@siunitx]">
+            <xsl:text>\DeclareSIUnit\</xsl:text>
+            <xsl:value-of select="@full" />
+            <xsl:text>{</xsl:text>
+            <xsl:choose>
+                <xsl:when test="@siunitx='none'">
+                    <xsl:value-of select="@short" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="@siunitx" />
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text>}&#xa;</xsl:text>
+        </xsl:for-each>
     </xsl:if>
     <xsl:text>%% Subdivision Numbering, Chapters, Sections, Subsections, etc&#xa;</xsl:text>
     <xsl:text>%% Subdivision numbers may be turned off at some level ("depth")&#xa;</xsl:text>
@@ -1610,11 +1615,17 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 
 <!-- Magnitude                                      -->
 <xsl:template match="mag">
+    <xsl:if test="not(parent::quantity)">
+        <xsl:message>MBX:WARNING: mag element should have parent quantity element</xsl:message>
+    </xsl:if>
     <xsl:apply-templates />
 </xsl:template>
 
 <!-- Units                                          -->
 <xsl:template match="unit|per">
+    <xsl:if test="not(parent::quantity)">
+        <xsl:message>MBX:WARNING: unit or per element should have parent quantity element</xsl:message>
+    </xsl:if>
     <!-- if we're in a 'per' node -->
     <xsl:if test="local-name(.)='per'">
         <xsl:text>\per</xsl:text>
@@ -1756,7 +1767,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>}{\nolinkurl{</xsl:text>
     <xsl:value-of select="." />
     <xsl:text>}}</xsl:text>
-</xsl:template>    
+</xsl:template>
 
 <!-- Special Characters from TeX -->
 <!--    # $ % ^ & _ { } ~ \      -->
