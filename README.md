@@ -87,7 +87,10 @@ you can probably stop after the first step.
     git fetch
     git pull
     <do work>
-    git add .
+    git status
+    <check that you've updated/added the files you think you had!>
+    <possibly run git diff as a further check>
+    git add <new files and edited files>
     git commit -m <MESSAGE GOES HERE>
     git push omd feature/<FEATURE NAME>
 
