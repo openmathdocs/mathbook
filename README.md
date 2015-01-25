@@ -7,6 +7,10 @@ GPL License.
 
 http://mathbook.pugetsound.edu
 
+Quickstart instructions at project website:  http://mathbook.pugetsound.edu
+
+============
+
 We have tried to keep this version of MathBook as close to 
 its original as possible, but some of our features are 
 not appropriate or compatible, so some divergence has/will occur.
@@ -98,6 +102,5 @@ and then submit pull request to `omd/dev` and, if appropriate, to `origin/dev`
 
 # running MBX script to update images; sample usage:
     ./script/mbx -vv -c tikz -f svg -d ~/Documents/projects/openmathdocs/mathbook/examples/images examples/sample-article.xml
-=======
-Quickstart instructions at project website:  http://mathbook.pugetsound.edu
+
 
