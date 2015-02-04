@@ -1616,8 +1616,8 @@ is just flat out on the page, as if printed there.
 
 
 <!-- Numbers, units, quantities                     -->
-<!-- quant                                          -->
-<xsl:template match="quant">
+<!-- quantity                                       -->
+<xsl:template match="quantity">
     <!-- warning if there is no content -->
     <xsl:if test="not(descendant::unit) and not(descendant::per) and not(descendant::mag)">
         <xsl:message terminate="no">
@@ -1655,7 +1655,7 @@ is just flat out on the page, as if printed there.
     <xsl:apply-templates />
 </xsl:template>
 
-<!-- unit and per children of a quant element       -->
+<!-- unit and per children of a quantity element    -->
 <!-- have a mandatory base attribute                -->
 <!-- may have prefix and exp attributes             -->
 <!-- base and prefix are not abbreviations          --> 
