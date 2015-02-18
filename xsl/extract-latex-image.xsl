@@ -1,4 +1,4 @@
-<?xml version='1.0'?> 
+<?xml version='1.0'?>
 
 <!--********************************************************************
 Copyright 2014 Robert A. Beezer
@@ -19,11 +19,13 @@ You should have received a copy of the GNU General Public License
 along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************-->
 
-<!-- This stylesheet locates <asymptote> elements          -->
-<!-- and wraps them for processing by the "asy" exectuable -->
+<!-- This stylesheet locates <latex-image-code> elements   -->
+<!-- and wraps them for LaTeX processing                   -->
+<!-- This includes the document's docinfo/macros           -->
+<!-- and the document's docinfo/latex-image-preamble       -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-    xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
     xmlns:exsl="http://exslt.org/common"
     extension-element-prefixes="exsl"
 >
@@ -33,37 +35,20 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- Walk the XML source tree -->
 <xsl:import href="./extract-identity.xsl" />
 
-<!-- Asymptote graphics to standalone file           -->
-<!-- Prepend document's macros, otherwise no changes -->
-<xsl:template match="image/asymptote">
+<!-- latex graphics to standalone file        -->
+<xsl:template match="image/latex-image-code">
     <xsl:variable name="filebase">
         <xsl:apply-templates select=".." mode="internal-id" />
     </xsl:variable>
-    <exsl:document href="{$scratch}/{$filebase}.asy" method="text">
-        <xsl:text>texpreamble("&#xa;</xsl:text>
+    <exsl:document href="{$scratch}/{$filebase}.tex" method="text">
+        <xsl:text>\documentclass[12pt,border=2pt]{standalone}&#xa;</xsl:text>
+        <xsl:text>\usepackage{amsmath,amssymb}&#xa;</xsl:text>
+        <xsl:value-of select="/mathbook/docinfo/latex-image-preamble"/>
         <xsl:value-of select="/mathbook/docinfo/macros"/>
-        <xsl:text>");&#xa;&#xa;</xsl:text>
+        <xsl:text>\begin{document}&#xa;</xsl:text>
         <xsl:value-of select="."/>
+        <xsl:text>\end{document}&#xa;</xsl:text>
     </exsl:document>
- </xsl:template>
-
-<!-- ################################## -->
-<!-- Deprecated Graphics Code Templates -->
-<!-- ################################## -->
-<!-- 2015/02/08: Deprecated, still functional but not maintained -->
-<xsl:template match="asymptote">
-    <xsl:variable name="filebase">
-        <xsl:apply-templates select="." mode="internal-id" />
-    </xsl:variable>
-    <exsl:document href="{$scratch}/{$filebase}.asy" method="text">
-        <xsl:text>texpreamble("&#xa;</xsl:text>
-        <xsl:value-of select="/mathbook/docinfo/macros"/>
-        <xsl:text>");&#xa;&#xa;</xsl:text>
-        <xsl:value-of select="."/>
-    </exsl:document>
- </xsl:template>
-<!-- ################################## -->
-<!-- Deprecated Graphics Code Templates -->
-<!-- ################################## -->
+  </xsl:template>
 
 </xsl:stylesheet>
