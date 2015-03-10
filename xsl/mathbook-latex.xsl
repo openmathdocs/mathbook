@@ -1628,11 +1628,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:message>MBX:WARNING: unit or per element should have parent quantity element</xsl:message>
     </xsl:if>
     <!-- if we're in a 'per' node -->
-<<<<<<< HEAD
-    <xsl:if test="local-name(.)='per'">
-=======
     <xsl:if test="self::per">
->>>>>>> feature/quantity
         <xsl:text>\per</xsl:text>
     </xsl:if>
     <!-- prefix is optional -->
