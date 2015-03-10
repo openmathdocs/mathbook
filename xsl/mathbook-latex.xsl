@@ -356,6 +356,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:if test="//quantity">
         <xsl:text>%% Used for units and number formatting&#xa;</xsl:text>
         <xsl:text>\usepackage[per-mode=fraction]{siunitx}&#xa;</xsl:text>
+        <xsl:text>\ifxetex\sisetup{math-micro=\text{µ},text-micro=µ}\fi</xsl:text>
         <xsl:text>%% Common non-SI units&#xa;</xsl:text>
         <xsl:for-each select="document('mathbook-units.xsl')//base[@siunitx]">
             <xsl:text>\DeclareSIUnit\</xsl:text>
@@ -1627,7 +1628,11 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:message>MBX:WARNING: unit or per element should have parent quantity element</xsl:message>
     </xsl:if>
     <!-- if we're in a 'per' node -->
+<<<<<<< HEAD
     <xsl:if test="local-name(.)='per'">
+=======
+    <xsl:if test="self::per">
+>>>>>>> feature/quantity
         <xsl:text>\per</xsl:text>
     </xsl:if>
     <!-- prefix is optional -->

@@ -27,6 +27,9 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- These are used by the quant/unit and quant/per elements     -->
 <!-- for HMTL output, and possibly other places in the future.   -->
 <!-- (For tex, the siunitx package knows \kilo, \meter, etc.)    -->
+<!-- To Do: enable siunitx's \of{}. Trivial for LaTeX side, but  -->
+<!-- for HTML side, would want CSS to control simultaneous       -->
+<!-- subscript and superscript.                                  -->
 
 <!-- Unit prefixes (the prefix attribute in a unit or per tag)   -->
 <!-- SI prefixes                                                 -->
@@ -42,6 +45,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <prefix full='centi'             short='c'/>
     <prefix full='deci'              short='d'/>
     <prefix full='deca'              short='da'/>
+    <prefix full='deka'              short='da'/>
     <prefix full='hecto'             short='h'/>
     <prefix full='kilo'              short='k'/>
     <prefix full='mega'              short='M'/>
@@ -118,6 +122,8 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <base full='liter'             short='L'/>
     <base full='litre'             short='l'/>
 
+    <!-- Percent                                                              -->
+    <base full='percent'           short='&#37;'/>
 
 <!-- completely non-SI units; these are not part of the siunitx package, so they    -->
 <!-- need siunitx='none'. The value of 'short' will be used as the macro output,    -->
