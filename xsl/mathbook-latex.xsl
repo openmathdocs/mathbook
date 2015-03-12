@@ -49,6 +49,11 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- Otherwise, happens early in preamble template -->
 <xsl:param name="latex.geometry" select="''"/>
 <!--  -->
+<!-- Pass a path and file name to a .tex file like -->
+<!-- mathbook/style/latex/mathbook-style.tex     -->
+<!-- with a collection of styling customizations   -->
+<xsl:param name="latex.style.extra" select="''"/>
+<!--  -->
 <!-- PDF Watermarking                    -->
 <!-- Non-empty string makes it happen    -->
 <!-- Scale works well for "CONFIDENTIAL" -->
@@ -82,6 +87,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- Insert packages, options into preamble -->
 <!-- early or late                          -->
 <xsl:param name="latex.preamble.early" select="''" />
+<xsl:param name="latex.style.extra" select="''" />
 <xsl:param name="latex.preamble.late" select="''" />
 <!--  -->
 <!-- LaTeX ToC levels always have sections at level "1"     -->
@@ -302,6 +308,18 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:value-of select="$latex.preamble.early" />
         <xsl:text>&#xa;</xsl:text>
     </xsl:if>
+    <xsl:choose>
+        <xsl:when test="$latex.style.extra = ''">
+            <xsl:text>\newcommand\mbxstyle[2]{#2}&#xa;</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:text>\usepackage{catchfilebetweentags}&#xa;</xsl:text>
+            <xsl:text>\newcommand\mbxstylefile{</xsl:text>
+            <xsl:value-of select="$latex.style.extra" />
+            <xsl:text>}&#xa;</xsl:text>
+            <xsl:text>\newcommand\mbxstyle[2]{\ExecuteMetaData[\mbxstylefile]{#1}}&#xa;</xsl:text>
+        </xsl:otherwise>
+    </xsl:choose>
     <xsl:text>%% Inline math delimiters, \(, \), made robust with next package&#xa;</xsl:text>
     <xsl:text>\usepackage{fixltx2e}&#xa;</xsl:text>
     <xsl:text>%% Page Layout Adjustments (latex.geometry)&#xa;</xsl:text>
@@ -338,7 +356,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>%% Only defined here if required in this document&#xa;</xsl:text>
     <xsl:if test="/mathbook//term">
         <xsl:text>%% Used for inline definitions of terms&#xa;</xsl:text>
-        <xsl:text>\newcommand{\terminology}[1]{\textbf{#1}}&#xa;</xsl:text>
+        <xsl:text>\newcommand{\terminology}[1]{{\mbxstyle{term}{\bfseries}#1}}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="/mathbook//acro">
         <xsl:text>%% Used to markup acronyms, defaults is no effect&#xa;</xsl:text>
