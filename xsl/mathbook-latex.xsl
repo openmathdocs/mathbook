@@ -356,16 +356,17 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>%% Only defined here if required in this document&#xa;</xsl:text>
     <xsl:if test="/mathbook//term">
         <xsl:text>%% Used for inline definitions of terms&#xa;</xsl:text>
-        <xsl:text>\newcommand{\terminology}[1]{{\mbxstyle{term}{\bfseries}#1}}&#xa;</xsl:text>
+        <xsl:text>\newcommand{\terminology}[1]{{\mbxstyle{terminology}{\bfseries}#1}}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="/mathbook//acro">
         <xsl:text>%% Used to markup acronyms, defaults is no effect&#xa;</xsl:text>
-        <xsl:text>\newcommand{\acronym}[1]{#1}&#xa;</xsl:text>
+        <xsl:text>\newcommand{\acronym}[1]{{\mbxstyle{acronym}{}#1}}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="//quantity">
         <xsl:text>%% Used for units and number formatting&#xa;</xsl:text>
-        <xsl:text>\usepackage[per-mode=fraction]{siunitx}&#xa;</xsl:text>
-        <xsl:text>\ifxetex\sisetup{math-micro=\text{µ},text-micro=µ}\fi</xsl:text>
+        <xsl:text>\usepackage{siunitx}&#xa;</xsl:text>
+        <xsl:text>\mbxstyle{sisetup}{\sisetup{per-mode=fraction}}&#xa;</xsl:text>
+        <xsl:text>\ifxetex\sisetup{math-micro=\text{µ},text-micro=µ}\fi&#xa;</xsl:text>
         <xsl:text>%% Common non-SI units&#xa;</xsl:text>
         <xsl:for-each select="document('mathbook-units.xsl')//base[@siunitx]">
             <xsl:text>\DeclareSIUnit\</xsl:text>
