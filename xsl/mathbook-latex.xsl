@@ -308,6 +308,9 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:value-of select="$latex.preamble.early" />
         <xsl:text>&#xa;</xsl:text>
     </xsl:if>
+    <xsl:text>%% xcolor loaded early with package options&#xa;</xsl:text>
+    <xsl:text>%% Since it used frequently by other packages, this avoids clashes&#xa;</xsl:text>
+    <xsl:text>\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}&#xa;</xsl:text>
     <xsl:choose>
         <xsl:when test="$latex.style.extra = ''">
             <xsl:text>\newcommand\mbxstyle[2]{#2}&#xa;</xsl:text>
@@ -318,6 +321,8 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
             <xsl:value-of select="$latex.style.extra" />
             <xsl:text>}&#xa;</xsl:text>
             <xsl:text>\newcommand\mbxstyle[2]{\ExecuteMetaData[\mbxstylefile]{#1}}&#xa;</xsl:text>
+            <xsl:text>%% Uncomment below to revert to default MBX styling&#xa;</xsl:text>
+            <xsl:text>%\renewcommand\mbxstyle[2]{#2}&#xa;</xsl:text>
         </xsl:otherwise>
     </xsl:choose>
     <xsl:text>%% Inline math delimiters, \(, \), made robust with next package&#xa;</xsl:text>
@@ -392,24 +397,29 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>\setcounter{secnumdepth}{</xsl:text>
         <xsl:value-of select="$latex-numbering-maxlevel" />
     <xsl:text>}&#xa;</xsl:text>
-    <!-- Could condition following on existence of any amsthm environment -->
-    <xsl:text>%% Environments with amsthm package&#xa;</xsl:text>
-    <xsl:text>%% Theorem-like enviroments in "plain" style, with or without proof&#xa;</xsl:text>
+    <xsl:text>%% Theorem-like enviroments in amsthm package's "plain" style, by default, with or without proof&#xa;</xsl:text>
     <xsl:text>\usepackage{amsthm}&#xa;</xsl:text>
     <xsl:text>\theoremstyle{plain}&#xa;</xsl:text>
+    <xsl:if test="$latex.style.extra != ''">
+        <xsl:text>%% mdframed package allows for decoration of environments. Use styling in mathbook-style.tex&#xa;</xsl:text>
+        <xsl:text>\usepackage[tikz]{mdframed}</xsl:text>
+    </xsl:if> 
     <xsl:text>%% Numbering for Theorems, Conjectures, Examples, Figures, etc&#xa;</xsl:text>
     <xsl:text>%% Controlled by  numbering.theorems.level  processing parameter&#xa;</xsl:text>
     <xsl:text>%% Always need a theorem environment to set base numbering scheme&#xa;</xsl:text>
     <xsl:text>%% even if document has no theorems (but has other environments)&#xa;</xsl:text>
-    <xsl:text>\newtheorem{theorem}{</xsl:text>
-    <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'theorem'" /></xsl:call-template>
-    <xsl:text>}</xsl:text>
-    <!-- See numbering-theorems variable being set in mathbook-common.xsl -->
-    <xsl:text>[</xsl:text>
-    <xsl:call-template name="level-number-to-latex-name">
-        <xsl:with-param name="level" select="$numbering-theorems" />
-    </xsl:call-template>
-    <xsl:text>]&#xa;</xsl:text>
+    <xsl:if test="//theorem">
+        <xsl:text>\mbxstyle{theoremstyle-theorem}{\theoremstyle{plain}}&#xa;</xsl:text>
+        <xsl:text>\newtheorem{theorem}{</xsl:text>
+        <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'theorem'" /></xsl:call-template>
+        <xsl:text>}</xsl:text>
+        <!-- See numbering-theorems variable being set in mathbook-common.xsl -->
+        <xsl:text>[</xsl:text>
+        <xsl:call-template name="level-number-to-latex-name">
+            <xsl:with-param name="level" select="$numbering-theorems" />
+        </xsl:call-template>
+        <xsl:text>]&#xa;</xsl:text>
+    </xsl:if>
     <!-- Localize "Proof" environment -->
     <!-- http://tex.stackexchange.com/questions/62020/how-to-change-the-word-proof-in-the-proof-environment -->
     <xsl:text>\renewcommand*{\proofname}{</xsl:text>
@@ -653,7 +663,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>%% Raster graphics inclusion, wrapped figures in paragraphs&#xa;</xsl:text>
     <xsl:text>\usepackage{graphicx}&#xa;</xsl:text>
     <xsl:text>%% Colors for Sage boxes and author tools (red hilites)&#xa;</xsl:text>
-    <xsl:text>\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}&#xa;</xsl:text>
+    <xsl:text>%% Uses xcolor, loaded earlier to avoid package option clashes&#xa;</xsl:text>
     <!-- Inconsolata font, sponsored by TUG: http://levien.com/type/myfonts/inconsolata.html            -->
     <!-- As seen on: http://tex.stackexchange.com/questions/50810/good-monospace-font-for-code-in-latex -->
     <!-- "Fonts for Displaying Program Code in LaTeX":  http://nepsweb.co.uk/docs%/progfonts.pdf        -->

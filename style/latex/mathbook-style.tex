@@ -17,6 +17,41 @@
 % along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 % *********************************************************************-->
 
+
+%% *********************************************************************
+%  MBX .tex output can be produced via xsltproc without specifying the stringparam "latex.style.extra", 
+%  and default styling will be used. If you wish to use a style file like this one for further styling,
+%  run xsltproc with --stringparam "latex.style.extra" "<path to this file or one like it>"
+%
+%  Tags in this file start with <*tagname>, and end with </tagname>, and should have some commentary on
+%  what each one does. The contents of tags should be TeX commands, not just strings. For instance, if
+%  the styling involves loading a package with options, you would use the entire \usepackage[]{}, not 
+%  just spell out the package options. 
+%
+%  In MBX .tex output, the new command \mbxstylefile should point to this style file, or a similar file.
+%  If it is an empty string, default styling will be used.
+%
+%  In MBX .tex output, the new command \mbxstyle appears multiple times in the preamble as \mbxstyle{#1}{#2}.
+%  #2 is simply commands that will be used if a style.tex file like this one is not being used. #1 is a tagname
+%  that appears in the style.tex file.
+%
+%  Once xcltproc is used to produce a .tex file using a style.tex file like this one, then a lot of 
+%  customiztion of appearance can be done without further use of xsltproc. For instance, the style.tex file 
+%  can be edited, and then the .tex file can go through pdflatex again, and changes will be reflected.
+%
+%  Or the author can manually edit the .tex MBX output and change the path to the style.tex file, to 
+%  get a new styling. An author could have an array of style.tex files that they switch back and forth on.
+%
+%  Or the author can revert to default styling be redefining how \mbxstyle is defined. For convenience, a
+%  \renewcommand line is provided that can be uncommented to achieve this.  Note that this doesn't work in 
+%  the opposite direction. If xsltproc is run the first time without a style.tex file, then several important 
+%  things are left out of the preamble that allow for use of a style.tex file in the first place.
+%
+%% *********************************************************************
+
+
+
+
 %% styling of terminology
 %% font commands to apply to vocabulary terms
 %<*terminology>
@@ -35,3 +70,30 @@
 \sisetup{per-mode=reciprocal}
 %</sisetup>
 
+
+
+%% theoremstyle for theorems
+%% Either use \theoremstyle{<existing style>} or define a new style and then use it.
+%% An existing style would be an amsthm pre-defined style, or a style defined earlier
+%% in the MBX .tex output's preamble. While this style sheet should maintain an order
+%% that is consistent with that order, it is not a guarantee.
+%% \surroundwithmdframed may be used to decorate the environment. See its documentation.
+%<*theoremstyle-theorem>
+\newtheoremstyle{theoremstyle}% name of the style to be used
+  {3pt}% measure of space to leave above the theorem. E.g.: 3pt
+  {3pt}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\scshape}% name of head font
+  {.}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}:\thmnote{ #3}}% Manually specify head
+\theoremstyle{theoremstyle}
+\surroundwithmdframed[outerlinewidth=2,
+                      roundcorner=10pt,
+                      backgroundcolor=yellow!40,
+                      outerlinecolor=blue!70!black,
+                      innertopmargin=1em,
+                      splittopskip=\topskip,
+                      ntheorem=true]{theorem}
+%</theoremstyle-theorem>
