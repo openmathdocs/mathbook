@@ -408,32 +408,35 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>%% Controlled by  numbering.theorems.level  processing parameter&#xa;</xsl:text>
     <xsl:text>%% Always need a theorem environment to set base numbering scheme&#xa;</xsl:text>
     <xsl:text>%% even if document has no theorems (but has other environments)&#xa;</xsl:text>
-    <xsl:if test="//theorem">
-        <xsl:text>\mbxstyle{theoremstyle-theorem}{\theoremstyle{plain}}&#xa;</xsl:text>
-        <xsl:text>\newtheorem{theorem}{</xsl:text>
-        <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'theorem'" /></xsl:call-template>
-        <xsl:text>}</xsl:text>
-        <!-- See numbering-theorems variable being set in mathbook-common.xsl -->
-        <xsl:text>[</xsl:text>
-        <xsl:call-template name="level-number-to-latex-name">
-            <xsl:with-param name="level" select="$numbering-theorems" />
-        </xsl:call-template>
-        <xsl:text>]&#xa;</xsl:text>
-    </xsl:if>
+    <!-- Always declare a theorem environment, even if theorem is never used, because other theorem-like    -->
+    <!-- environments rely on counter.  Could condition the following on presence of any such environment.  -->
+    <xsl:text>\mbxstyle{theoremstyle-theorem}{\theoremstyle{plain}}&#xa;</xsl:text>
+    <xsl:text>\newtheorem{theorem}{</xsl:text>
+    <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'theorem'" /></xsl:call-template>
+    <xsl:text>}</xsl:text>
+    <!-- See numbering-theorems variable being set in mathbook-common.xsl -->
+    <xsl:text>[</xsl:text>
+    <xsl:call-template name="level-number-to-latex-name">
+        <xsl:with-param name="level" select="$numbering-theorems" />
+    </xsl:call-template>
+    <xsl:text>]&#xa;</xsl:text>
     <!-- Localize "Proof" environment -->
     <!-- http://tex.stackexchange.com/questions/62020/how-to-change-the-word-proof-in-the-proof-environment -->
     <xsl:text>\renewcommand*{\proofname}{</xsl:text>
     <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'proof'" /></xsl:call-template>
     <xsl:text>}</xsl:text>
+    <xsl:text>\mbxstyle{theoremstyle-proof}{}&#xa;</xsl:text>         
     <xsl:text>%% Only variants actually used in document appear here&#xa;</xsl:text>
     <xsl:text>%% Numbering: all theorem-like numbered consecutively&#xa;</xsl:text>
     <xsl:text>%% i.e. Corollary 4.3 follows Theorem 4.2&#xa;</xsl:text>
     <xsl:if test="//corollary">
+        <xsl:text>\mbxstyle{theoremstyle-corollary}{\theoremstyle{plain}}&#xa;</xsl:text>                           
         <xsl:text>\newtheorem{corollary}[theorem]{</xsl:text>
         <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'corollary'" /></xsl:call-template>
         <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="//lemma">
+        <xsl:text>\mbxstyle{theoremstyle-lemma}{\theoremstyle{plain}}&#xa;</xsl:text>
         <xsl:text>\newtheorem{lemma}[theorem]{</xsl:text>
         <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'lemma'" /></xsl:call-template>
         <xsl:text>}&#xa;</xsl:text>
@@ -444,60 +447,68 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="//proposition">
+        <xsl:text>\mbxstyle{theoremstyle-proposition}{\theoremstyle{plain}}&#xa;</xsl:text>
         <xsl:text>\newtheorem{proposition}[theorem]{</xsl:text>
         <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'proposition'" /></xsl:call-template>
         <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="//claim">
+        <xsl:text>\mbxstyle{theoremstyle-claim}{\theoremstyle{plain}}&#xa;</xsl:text>
         <xsl:text>\newtheorem{claim}[theorem]{</xsl:text>
         <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'claim'" /></xsl:call-template>
         <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="//fact">
+        <xsl:text>\mbxstyle{theoremstyle-fact}{\theoremstyle{plain}}&#xa;</xsl:text>
         <xsl:text>\newtheorem{fact}[theorem]{</xsl:text>
         <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'fact'" /></xsl:call-template>
         <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="//conjecture">
+        <xsl:text>\mbxstyle{theoremstyle-conjecture}{\theoremstyle{plain}}&#xa;</xsl:text>
         <xsl:text>\newtheorem{conjecture}[theorem]{</xsl:text>
         <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'conjecture'" /></xsl:call-template>
         <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="//axiom">
+        <xsl:text>\mbxstyle{theoremstyle-axiom}{\theoremstyle{plain}}&#xa;</xsl:text>
         <xsl:text>\newtheorem{axiom}[theorem]{</xsl:text>
         <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'axiom'" /></xsl:call-template>
         <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
     <xsl:if test="//principle">
+        <xsl:text>\mbxstyle{theoremstyle-principle}{\theoremstyle{plain}}&#xa;</xsl:text>
         <xsl:text>\newtheorem{principle}[theorem]{</xsl:text>
         <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'principle'" /></xsl:call-template>
         <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
-    <xsl:if test="//definition or //example or //exercise or //remark">
-        <xsl:text>%% Definition-like environments, normal text&#xa;</xsl:text>
-        <xsl:text>%% Numbering for definition, examples is in sync with theorems, etc&#xa;</xsl:text>
-        <xsl:text>%% also for free-form exercises, not in exercise sections&#xa;</xsl:text>
-        <xsl:text>\theoremstyle{definition}&#xa;</xsl:text>
-        <xsl:if test="//definition">
-            <xsl:text>\newtheorem{definition}[theorem]{</xsl:text>
-            <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'definition'" /></xsl:call-template>
-            <xsl:text>}&#xa;</xsl:text>
-        </xsl:if>
-        <xsl:if test="//example">
-            <xsl:text>\newtheorem{example}[theorem]{</xsl:text>
-            <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'example'" /></xsl:call-template>
-            <xsl:text>}&#xa;</xsl:text>
-        </xsl:if>
-        <xsl:if test="//exercise">
-            <xsl:text>\newtheorem{exercise}[theorem]{</xsl:text>
-            <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'exercise'" /></xsl:call-template>
-            <xsl:text>}&#xa;</xsl:text>
-        </xsl:if>
-        <xsl:if test="//remark">
-            <xsl:text>\newtheorem{remark}[theorem]{</xsl:text>
-            <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'remark'" /></xsl:call-template>
-            <xsl:text>}&#xa;</xsl:text>
-        </xsl:if>
+    <xsl:text>%% Definition-like environments, normal text&#xa;</xsl:text>
+    <xsl:text>%% Numbering for definition, examples is in sync with theorems, etc&#xa;</xsl:text>
+    <xsl:text>%% also for free-form exercises, not in exercise sections&#xa;</xsl:text>
+    <xsl:text>\theoremstyle{definition}&#xa;</xsl:text>
+    <xsl:if test="//definition">
+        <xsl:text>\mbxstyle{theoremstyle-definition}{\theoremstyle{definition}}&#xa;</xsl:text>
+        <xsl:text>\newtheorem{definition}[theorem]{</xsl:text>
+        <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'definition'" /></xsl:call-template>
+        <xsl:text>}&#xa;</xsl:text>
+    </xsl:if>
+    <xsl:if test="//example">
+        <xsl:text>\mbxstyle{theoremstyle-example}{\theoremstyle{definition}}&#xa;</xsl:text>
+        <xsl:text>\newtheorem{example}[theorem]{</xsl:text>
+        <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'example'" /></xsl:call-template>
+        <xsl:text>}&#xa;</xsl:text>
+    </xsl:if>
+    <xsl:if test="//exercise">
+        <xsl:text>\mbxstyle{theoremstyle-exercise}{\theoremstyle{definition}}&#xa;</xsl:text>
+        <xsl:text>\newtheorem{exercise}[theorem]{</xsl:text>
+        <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'exercise'" /></xsl:call-template>
+        <xsl:text>}&#xa;</xsl:text>
+    </xsl:if>
+    <xsl:if test="//remark">
+        <xsl:text>\mbxstyle{theoremstyle-remark}{\theoremstyle{definition}}&#xa;</xsl:text>
+        <xsl:text>\newtheorem{remark}[theorem]{</xsl:text>
+        <xsl:call-template name="type-name"><xsl:with-param name="string-id" select="'remark'" /></xsl:call-template>
+        <xsl:text>}&#xa;</xsl:text>
     </xsl:if>
     <!-- Numbering Equations -->
     <!-- See numbering-equations variable being set in mathbook-common.xsl -->

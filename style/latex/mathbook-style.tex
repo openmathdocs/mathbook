@@ -95,5 +95,80 @@
                       outerlinecolor=blue!70!black,
                       innertopmargin=1em,
                       splittopskip=\topskip,
-                      ntheorem=true]{theorem}
+                      ]{theorem}
 %</theoremstyle-theorem>
+
+%% theoremstyle for proofs
+%% The proof environment is typically simple: The word "Proof", followed by a period, perhaps 
+%% in italics or something like that, and then at the end the qed symbol. You may want to change
+%% the fontstyle on the word "Proof:". You may want to change the qed symbol. You may wan to 
+%% encase it all in a box using \surroundwithmframed. All of that can be done here.
+%<*theoremstyle-proof>
+\expandafter\let\expandafter\oldproof\csname\string\proof\endcsname
+\let\oldendproof\endproof
+\renewenvironment{proof}[1][\proofname]{%
+  \oldproof[\scshape #1]%
+}{\oldendproof}
+\renewcommand{\qedsymbol}{\checkmark}
+%</theoremstyle-proof>
+
+%% theoremstyle for corollaries
+%<*theoremstyle-corollary>
+\theoremstyle{plain}
+%</theoremstyle-corollary>
+
+%% theoremstyle for lemmas
+%<*theoremstyle-lemma>
+\theoremstyle{plain}
+%</theoremstyle-lemma>
+
+%% theoremstyle for propositionss
+%<*theoremstyle-proposition>
+\theoremstyle{plain}
+%</theoremstyle-proposition>
+
+%% theoremstyle for claims
+%<*theoremstyle-claim>
+\theoremstyle{plain}
+%</theoremstyle-claim>
+
+%% theoremstyle for facts
+%<*theoremstyle-fact>
+\theoremstyle{plain}
+%</theoremstyle-fact>
+
+%% theoremstyle for conjectures
+%<*theoremstyle-conjecture>
+\theoremstyle{plain}
+%</theoremstyle-conjecture>
+
+%% theoremstyle for axioms
+%<*theoremstyle-axiom>
+\theoremstyle{plain}
+%</theoremstyle-axiom>
+
+%% theoremstyle for principles
+%<*theoremstyle-principle>
+\theoremstyle{plain}
+%</theoremstyle-principle>
+
+%% theoremstyle for definitions
+%<*theoremstyle-definition>
+\theoremstyle{definition}
+%</theoremstyle-definition>
+
+%% theoremstyle for examples
+%<*theoremstyle-example>
+\theoremstyle{definition}
+%</theoremstyle-example>
+
+%% theoremstyle for exercises
+%<*theoremstyle-exercise>
+\theoremstyle{definition}
+%</theoremstyle-exercise>
+
+%% theoremstyle for remarks
+%<*theoremstyle-remark>
+\theoremstyle{definition}
+%</theoremstyle-remark>
+
