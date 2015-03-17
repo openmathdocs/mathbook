@@ -87,7 +87,6 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- Insert packages, options into preamble -->
 <!-- early or late                          -->
 <xsl:param name="latex.preamble.early" select="''" />
-<xsl:param name="latex.style.extra" select="''" />
 <xsl:param name="latex.preamble.late" select="''" />
 <!--  -->
 <!-- LaTeX ToC levels always have sections at level "1"     -->
