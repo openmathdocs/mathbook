@@ -1612,23 +1612,13 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:value-of select="$columnPos"/>
         <xsl:text> Value: </xsl:text>
         <xsl:value-of select="$cell"/>
-      </xsl:message>
   <!-- loop through all other cells in the current column -->
-  <xsl:for-each select="(../row/cell[position()=$columnPos])">
-    <xsl:message>
-        <xsl:text>HERE!</xsl:text>
-        <xsl:choose>
-          <!-- test if current value is a number -->
-          <xsl:when test="number(.)=.">
-                <xsl:text> Number </xsl:text>
-          </xsl:when>
-          <xsl:otherwise>
-                <xsl:text> other </xsl:text>
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:value-of select="."/>
+  <xsl:variable name="column-cells" select="../row/cell[position()=$columnPos]"/>
+  <xsl:text> maximum </xsl:text>
+  <xsl:value-of select="$column-cells[number(.)=.][not(. &lt; $column-cells)][1]"/>
+  <xsl:text> minimum </xsl:text>
+  <xsl:value-of select="$column-cells[number(.)=.][not(. &gt; $column-cells)][1]"/>
       </xsl:message>
-  </xsl:for-each>
 </xsl:template>
 
 <!-- ############ -->
