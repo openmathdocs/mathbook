@@ -1612,10 +1612,25 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:value-of select="$columnPos"/>
         <xsl:text> Value: </xsl:text>
         <xsl:value-of select="$cell"/>
-  <!-- loop through all other cells in the current column -->
-  <xsl:variable name="column-cells" select="../row/cell[position()=$columnPos]"/>
-  <xsl:text> maximum </xsl:text>
-  <xsl:value-of select="$column-cells[number(.)=.][not(. &lt; $column-cells)][1]"/>
+  <!-- select cells that have the appropriate column position, and that are numbers -->
+  <xsl:variable name="column-cells" select="../row/cell[position()=$columnPos][number(.)=.]"/>
+  <!-- get maximum length of string before and after decimal: 
+      http://stackoverflow.com/questions/18759984/find-max-value-of-a-node-using-xpath-in-xslt-version1-0 -->
+  <xsl:text> maximum digits before decimal: </xsl:text>
+  <xsl:variable name="max-digits-before-decimal">
+    <xsl:value-of select="string-length(substring-before($column-cells[not(string-length(substring-before(.,'.')) &lt; string-length(substring-before($column-cells,'.')))][1],'.'))"/>
+  </xsl:variable>
+  <xsl:variable name="max-digits-before-decimal-no-decimals">
+    <xsl:value-of select="string-length($column-cells[not(contains(.,'.'))][not(string-length(.) &lt; string-length($column-cells))][1])"/>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="$max-digits-before-decimal &gt;$max-digits-before-decimal-no-decimals">
+        <xsl:value-of select="$max-digits-before-decimal"/>
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:value-of select="$max-digits-before-decimal-no-decimals"/>
+    </xsl:otherwise>
+  </xsl:choose>
   <xsl:text> minimum </xsl:text>
   <xsl:value-of select="$column-cells[number(.)=.][not(. &gt; $column-cells)][1]"/>
       </xsl:message>
