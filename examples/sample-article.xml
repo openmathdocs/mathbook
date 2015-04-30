@@ -1877,16 +1877,17 @@ the xsltproc executable.
               <title>Decimal alignment</title>
                 <table>
                 <tabular top="major" halign="center">
-                    <col halign="left"/>
                     <col halign="."/>
+                    <col halign="left"/>
                     <row bottom="minor">
                         <cell>  <m>i</m></cell>
                         <cell><m>t_i</m></cell>
                     </row>
-                    <row> <cell>12.1</cell><cell>000.1</cell></row>
+                    <row> <cell>12.1</cell><cell>000000000.1</cell></row>
                     <row> <cell>3.34</cell><cell>1.12345</cell></row>
-                    <row> <cell>103.34</cell><cell>123456</cell></row>
+                    <row> <cell>103.34</cell><cell>-123456</cell></row>
                     <row> <cell>101.1</cell><cell>10.1234</cell></row>
+                    <row> <cell>-101.1</cell><cell>-10.1234</cell></row>
                     <row> <cell>123</cell><cell>1234</cell></row>
                     <row> <cell>12</cell><cell>123</cell></row>
                 </tabular>
