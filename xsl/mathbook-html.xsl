@@ -1952,8 +1952,24 @@ is just flat out on the page, as if printed there.
                     <xsl:value-of select="$column-span" />
                 </xsl:attribute>
             </xsl:if>
-            <!-- process the actual contents -->
-            <xsl:apply-templates select="$the-cell" />
+            <xsl:choose>
+              <!-- decimal aligned columns need wrapping in a span -->
+              <xsl:when test="$alignment='.'">
+                <xsl:element name="span">
+                    <xsl:attribute name="class">decimal</xsl:attribute>
+                    <xsl:call-template name="decimal-aligned-column">
+                        <xsl:with-param name="cell" select="$the-cell" />
+                    </xsl:call-template>
+                    <!-- process the actual contents -->
+                    <xsl:apply-templates select="$the-cell" />
+                </xsl:element>
+              </xsl:when>
+              <!-- other columns don't need to be wrapped in a span -->
+              <xsl:otherwise>
+                <!-- process the actual contents -->
+                <xsl:apply-templates select="$the-cell" />
+              </xsl:otherwise>
+            </xsl:choose>
         </xsl:element>
         <!-- recurse forward, perhaps to an empty cell -->
         <xsl:call-template name="row-cells">
@@ -2004,6 +2020,10 @@ is just flat out on the page, as if printed there.
         </xsl:when>
         <xsl:when test="$align='right'">
             <xsl:text>r</xsl:text>
+        </xsl:when>
+        <!-- decimal alignment -->
+        <xsl:when test="$align='.'">
+            <xsl:text>d</xsl:text>
         </xsl:when>
         <xsl:otherwise>
             <xsl:message>MBX:WARNING: tabular horizontal alignment attribute not recognized: use left, center, right</xsl:message>

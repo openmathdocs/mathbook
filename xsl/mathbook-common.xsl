@@ -1600,6 +1600,36 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
     </xsl:choose>
 </xsl:template>
 
+<!-- decimal alignment in tabular environments -->
+<!-- decimal alignment in tabular environments -->
+<!-- decimal alignment in tabular environments -->
+<xsl:template name="decimal-aligned-column">
+  <xsl:param name="cell"/>
+  <!-- column position of current td element -->
+  <xsl:variable name="columnPos" select="count($cell/preceding-sibling::cell)+1"/>
+    <xsl:message>
+        <xsl:text>Position: </xsl:text>
+        <xsl:value-of select="$columnPos"/>
+        <xsl:text> Value: </xsl:text>
+        <xsl:value-of select="$cell"/>
+      </xsl:message>
+  <!-- loop through all other cells in the current column -->
+  <xsl:for-each select="(../row/cell[position()=$columnPos])">
+    <xsl:message>
+        <xsl:text>HERE!</xsl:text>
+        <xsl:choose>
+          <!-- test if current value is a number -->
+          <xsl:when test="number(.)=.">
+                <xsl:text> Number </xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+                <xsl:text> other </xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="."/>
+      </xsl:message>
+  </xsl:for-each>
+</xsl:template>
 
 <!-- ############ -->
 <!-- Deprecations -->
