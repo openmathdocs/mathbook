@@ -1877,7 +1877,7 @@ the xsltproc executable.
               <title>Decimal alignment</title>
                 <table>
                 <tabular top="major" halign="center">
-                    <col halign="left"/>
+                    <col halign="."/>
                     <col halign="."/>
                     <row bottom="minor">
                         <cell>  <m>i</m></cell>
@@ -1892,7 +1892,7 @@ the xsltproc executable.
                     <row> <cell>123</cell><cell>1234</cell></row>
                     <row> <cell>12</cell><cell>123</cell></row>
                 </tabular>
-            <caption>Euler's approximation for Duffing's Equation with <m>h = 0.2</m></caption>
+                <caption>Simply specify <c>halign='.'</c> to align columns at the decimal.</caption>
             </table>
             </subsection>
         </section>

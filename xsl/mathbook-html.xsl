@@ -1925,6 +1925,7 @@ is just flat out on the page, as if printed there.
                 <!-- always write alignmant, so *precede* all subsequent with a space -->
                 <xsl:call-template name="halign-specification">
                     <xsl:with-param name="align" select="$alignment" />
+                    <xsl:with-param name="cell" select="$the-cell" />
                 </xsl:call-template>
                 <!-- bottom border -->
                 <xsl:text> b</xsl:text>
@@ -1953,13 +1954,30 @@ is just flat out on the page, as if printed there.
                 </xsl:attribute>
             </xsl:if>
             <xsl:choose>
-              <!-- decimal aligned columns need wrapping in a span -->
-              <xsl:when test="$alignment='.'">
+              <!-- decimal aligned columns need to wrap the (numbered) cells in a span -->
+              <xsl:when test="$alignment='.' and number($the-cell)=$the-cell">
                 <xsl:element name="span">
                     <xsl:attribute name="class">decimal</xsl:attribute>
-                    <xsl:call-template name="decimal-aligned-column">
-                        <xsl:with-param name="cell" select="$the-cell" />
-                    </xsl:call-template>
+                    <xsl:variable name="max-characters-before-decimal">
+                        <xsl:call-template name="maximum-characters-before-decimal-in-column">
+                            <xsl:with-param name="cell" select="$the-cell" />
+                        </xsl:call-template>
+                    </xsl:variable>
+                    <xsl:attribute name="style"><xsl:text>width:</xsl:text>
+                    <!-- treat cells that are numbers that contain decimals slightly differently than those that don't -->
+                    <xsl:choose>
+                      <!-- cells that contain decimals -->
+                      <xsl:when test="contains($the-cell,'.')">
+                             <xsl:value-of select="$max-characters-before-decimal+string-length(substring-after($the-cell,'.'))+1"/>   
+                      </xsl:when> 
+                      <!-- cells that *don't* contain decimals -->
+                      <xsl:otherwise>
+                             <xsl:value-of select="$max-characters-before-decimal+.5"/>   
+                      </xsl:otherwise>
+                    </xsl:choose>
+                    <!-- CSS unit of measurement, ch is the width of a 0 -->
+                    <xsl:text>ch</xsl:text>
+                    </xsl:attribute>
                     <!-- process the actual contents -->
                     <xsl:apply-templates select="$the-cell" />
                 </xsl:element>
@@ -2011,6 +2029,7 @@ is just flat out on the page, as if printed there.
 <!-- Translate horizontal alignment to CSS short name -->
 <xsl:template name="halign-specification">
     <xsl:param name="align" />
+    <xsl:param name="cell" />
     <xsl:choose>
         <xsl:when test="$align='left'">
             <xsl:text>l</xsl:text>
@@ -2023,7 +2042,14 @@ is just flat out on the page, as if printed there.
         </xsl:when>
         <!-- decimal alignment -->
         <xsl:when test="$align='.'">
-            <xsl:text>d</xsl:text>
+          <xsl:choose>
+            <xsl:when test="number($cell)=$cell">
+                <xsl:text>d</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                  <xsl:text>c</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
             <xsl:message>MBX:WARNING: tabular horizontal alignment attribute not recognized: use left, center, right</xsl:message>

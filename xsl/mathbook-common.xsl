@@ -1603,16 +1603,10 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- decimal alignment in tabular environments -->
 <!-- decimal alignment in tabular environments -->
 <!-- decimal alignment in tabular environments -->
-<xsl:template name="decimal-aligned-column">
+<xsl:template name="maximum-characters-before-decimal-in-column">
   <xsl:param name="cell"/>
   <!-- column position of current td element -->
   <xsl:variable name="columnPos" select="count($cell/preceding-sibling::cell)+1"/>
-    <xsl:message>
-        <xsl:text>Position: </xsl:text>
-        <xsl:value-of select="$columnPos"/>
-        <xsl:text> Value: </xsl:text>
-        <xsl:value-of select="$cell"/>
-  <xsl:text> maximum characters before decimal: </xsl:text>
   <!-- maximum number of characters before decimal of selected cells that have the appropriate column position, 
         and that are numbers; this necessarily ignores text -->
   <xsl:variable name="max-characters-before-decimal">
@@ -1634,7 +1628,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
       </xsl:if>
     </xsl:for-each>
   </xsl:variable>
-  <!-- we need the maximum of the two calculations about the string *before* the decimal -->
+  <!-- we need the maximum of the two previous calculations about the string *before* the decimal -->
   <xsl:choose>
     <xsl:when test="$max-characters-before-decimal &gt;$max-characters-before-decimal-no-decimals">
         <xsl:value-of select="$max-characters-before-decimal"/>
@@ -1643,6 +1637,12 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:value-of select="$max-characters-before-decimal-no-decimals"/>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<xsl:template name="maximum-characters-after-decimal-in-column">
+  <xsl:param name="cell"/>
+  <!-- column position of current td element -->
+  <xsl:variable name="columnPos" select="count($cell/preceding-sibling::cell)+1"/>
   <!-- maximum number of characters *after* decimal of selected cells that have the appropriate column position, 
         and that are numbers; this necessarily ignores text -->
   <xsl:variable name="max-characters-after-decimal">
@@ -1653,10 +1653,12 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
       </xsl:if>
     </xsl:for-each>
   </xsl:variable>
-  <xsl:text> max *after* decimal:  </xsl:text>
   <xsl:value-of select="$max-characters-after-decimal"/>
-      </xsl:message>
 </xsl:template>
+
+<!-- end decimal alignment in tabular environments -->
+<!-- end decimal alignment in tabular environments -->
+<!-- end decimal alignment in tabular environments -->
 
 <!-- ############ -->
 <!-- Deprecations -->
