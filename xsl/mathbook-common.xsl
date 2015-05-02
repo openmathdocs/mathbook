@@ -1612,56 +1612,49 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:value-of select="$columnPos"/>
         <xsl:text> Value: </xsl:text>
         <xsl:value-of select="$cell"/>
-  <xsl:text> maximum digits before decimal: </xsl:text>
-  <!-- select cells that have the appropriate column position, and that are numbers; this necessarily ignores text and other non-numbers -->
-  <xsl:variable name="column-cells" select="../row/cell[position()=$columnPos][number(.)=.]"/>
-  <!-- get the maximum number of digits before numbers that contain decimals, e.g 2.13, 1234.56 
-    
-       A small explanation:
-    
-       begin with:  $column-cells[not(. &lt; $column-cells)][1] 
-                    gets the maximum value of $column-cells, http://stackoverflow.com/questions/18759984/find-max-value-of-a-node-using-xpath-in-xslt-version1-0 
-
-       next:        $column-cells[not(string-length(substring-before(.,'.')) &lt; string-length(substring-before($column-cells,'.')))]
-                    gets the contents of the cell that has the *maximum* character length *before* the decimal within $column-cells
-
-       next:        substring-before($column-cells...,'.')
-                    gets the substring before the decimal of the contents of the cell that has the maximum character length *before* the decimal within $column-cells
-
-       finally:     string-length(
-                        substring-before($column-cells
-                        [not(string-length(substring-before(.,'.')) &lt; string-length(substring-before($column-cells,'.')))]
-                        [1],'.')
-                        )
-                    gets the *length* of the substring before the decimal of the contents of the cell that has the maximum character length before the decimal within $column-cells
-  -->
-  <xsl:variable name="max-digits-before-decimal" 
-    select="string-length(
-            substring-before($column-cells
-            [not(string-length(substring-before(.,'.')) &lt; string-length(substring-before($column-cells,'.')))]
-            [1],'.')
-            )"/>
-  <!-- get the maximum number of digits of numbers that *don't* contain decimals, e.g 12345 
-    
+  <xsl:text> maximum characters before decimal: </xsl:text>
+  <!-- maximum number of characters before decimal of selected cells that have the appropriate column position, 
+        and that are numbers; this necessarily ignores text -->
+  <xsl:variable name="max-characters-before-decimal">
+  <xsl:for-each select="../row/cell[position()=$columnPos][number(.)=.]">
+      <xsl:sort select="string-length(substring-before(.,'.'))" data-type="number" order="ascending" />
+      <xsl:if test="position() = last()">
+        <xsl:value-of select="string-length(substring-before(.,'.'))"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+  <!-- get the maximum number of characters of numbers that *don't* contain decimals, e.g 12345 
        This needs to be done separately from the calculation above, as we simply want the length of the character string,
        not the length of a substring -->
-  <xsl:variable name="max-digits-before-decimal-no-decimals" 
-    select="string-length(
-    $column-cells[not(contains(.,'.'))]
-    [not(string-length(.) &lt; string-length($column-cells))]
-    [1]
-    )"/>
+  <xsl:variable name="max-characters-before-decimal-no-decimals">
+  <xsl:for-each select="../row/cell[position()=$columnPos][not(contains(.,'.'))][number(.)=.]">
+      <xsl:sort select="string-length(.)" data-type="number" order="ascending" />
+      <xsl:if test="position() = last()">
+        <xsl:value-of select="string-length(.)"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
   <!-- we need the maximum of the two calculations about the string *before* the decimal -->
   <xsl:choose>
-    <xsl:when test="$max-digits-before-decimal &gt;$max-digits-before-decimal-no-decimals">
-        <xsl:value-of select="$max-digits-before-decimal"/>
+    <xsl:when test="$max-characters-before-decimal &gt;$max-characters-before-decimal-no-decimals">
+        <xsl:value-of select="$max-characters-before-decimal"/>
     </xsl:when>
     <xsl:otherwise>
-        <xsl:value-of select="$max-digits-before-decimal-no-decimals"/>
+        <xsl:value-of select="$max-characters-before-decimal-no-decimals"/>
     </xsl:otherwise>
   </xsl:choose>
-  <xsl:text> minimum </xsl:text>
-  <xsl:value-of select="$column-cells[number(.)=.][not(. &gt; $column-cells)][1]"/>
+  <!-- maximum number of characters *after* decimal of selected cells that have the appropriate column position, 
+        and that are numbers; this necessarily ignores text -->
+  <xsl:variable name="max-characters-after-decimal">
+  <xsl:for-each select="../row/cell[position()=$columnPos][number(.)=.]">
+      <xsl:sort select="string-length(substring-after(.,'.'))" data-type="number" order="ascending" />
+      <xsl:if test="position() = last()">
+        <xsl:value-of select="string-length(substring-after(.,'.'))"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+  <xsl:text> max *after* decimal:  </xsl:text>
+  <xsl:value-of select="$max-characters-after-decimal"/>
       </xsl:message>
 </xsl:template>
 
