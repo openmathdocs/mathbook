@@ -1967,19 +1967,19 @@ is just flat out on the page, as if printed there.
                         </xsl:call-template>
                     </xsl:variable>
                     <xsl:attribute name="style"><xsl:text>width:</xsl:text>
-                    <!-- treat cells that are numbers that contain decimals slightly differently than those that don't -->
-                    <xsl:choose>
-                      <!-- cells that contain decimals -->
-                      <xsl:when test="contains($the-cell,'.')">
-                             <xsl:value-of select="$max-characters-before-decimal+string-length(substring-after($the-cell,'.'))+1"/>   
-                      </xsl:when> 
-                      <!-- cells that *don't* contain decimals -->
-                      <xsl:otherwise>
-                             <xsl:value-of select="$max-characters-before-decimal+.5"/>   
-                      </xsl:otherwise>
-                    </xsl:choose>
-                    <!-- CSS unit of measurement, ch is the width of a 0 -->
-                    <xsl:text>ch</xsl:text>
+                        <!-- treat cells that are numbers that contain decimals slightly differently than those that don't -->
+                        <xsl:choose>
+                          <!-- cells that contain decimals -->
+                          <xsl:when test="contains($the-cell,'.')">
+                                 <xsl:value-of select="$max-characters-before-decimal+string-length(substring-after($the-cell,'.'))+1"/>   
+                          </xsl:when> 
+                          <!-- cells that *don't* contain decimals -->
+                          <xsl:otherwise>
+                                 <xsl:value-of select="$max-characters-before-decimal+.5"/>   
+                          </xsl:otherwise>
+                        </xsl:choose>
+                        <!-- CSS unit of measurement, ch is the width of a 0 -->
+                        <xsl:text>ch</xsl:text>
                     </xsl:attribute>
                     <!-- process the actual contents -->
                     <xsl:apply-templates select="$the-cell" />
