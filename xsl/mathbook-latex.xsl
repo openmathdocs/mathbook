@@ -3078,6 +3078,24 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <!-- decimal alignment -->
         <xsl:when test="$align='.'">
             <xsl:text>S[table-format=</xsl:text>
+            <!-- get the column position -->
+            <xsl:variable name="columnPos" select="count(preceding-sibling::col)+1"/>
+            <!-- get the maximum number of characters *before* the decimals in the current column -->
+            <xsl:variable name="max-characters-before-decimal">
+                <xsl:call-template name="maximum-characters-before-decimal-in-column">
+                    <xsl:with-param name="column-cells" select="ancestor::tabular/row/cell[position()=$columnPos]"/>
+                </xsl:call-template>
+            </xsl:variable>
+            <xsl:value-of select="$max-characters-before-decimal"/>
+            <xsl:text>.</xsl:text>
+            <!-- get the maximum number of characters *after* the decimals in the current column -->
+            <xsl:variable name="max-characters-after-decimal">
+                <xsl:call-template name="maximum-characters-after-decimal-in-column">
+                    <xsl:with-param name="column-cells" select="ancestor::tabular/row/cell[position()=$columnPos]"/>
+                </xsl:call-template>
+            </xsl:variable>
+            <xsl:value-of select="$max-characters-after-decimal"/>
+            <xsl:text>]</xsl:text>
         </xsl:when>
         <xsl:otherwise>
             <xsl:message>MBX:WARNING: tabular horizontal alignment attribute not recognized: use left, center, right</xsl:message>
