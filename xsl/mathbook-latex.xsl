@@ -344,7 +344,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:text>%% Used to markup acronyms, defaults is no effect&#xa;</xsl:text>
         <xsl:text>\newcommand{\acronym}[1]{#1}&#xa;</xsl:text>
     </xsl:if>
-    <xsl:if test="//quantity">
+    <xsl:if test="//quantity or //col[@halign='.']">
         <xsl:text>%% Used for units and number formatting&#xa;</xsl:text>
         <xsl:text>\usepackage[per-mode=fraction]{siunitx}&#xa;</xsl:text>
         <xsl:text>\ifxetex\sisetup{math-micro=\text{µ},text-micro=µ}\fi</xsl:text>
@@ -3079,7 +3079,16 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:when test="$align='.'">
             <xsl:text>S[table-format=</xsl:text>
             <!-- get the column position -->
-            <xsl:variable name="columnPos" select="count(preceding-sibling::col)+1"/>
+            <xsl:variable name="columnPos">
+                <xsl:choose>
+                  <xsl:when test="local-name(.)='row'">
+                    <xsl:value-of select="count(preceding-sibling::cell)+1"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="count(preceding-sibling::col)+1"/>
+                  </xsl:otherwise> 
+                </xsl:choose>
+            </xsl:variable>
             <!-- get the maximum number of characters *before* the decimals in the current column -->
             <xsl:variable name="max-characters-before-decimal">
                 <xsl:call-template name="maximum-characters-before-decimal-in-column">
@@ -3087,6 +3096,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
                 </xsl:call-template>
             </xsl:variable>
             <xsl:value-of select="$max-characters-before-decimal"/>
+            <!-- siunitx S column has format: S[table-format=before.after] the next line inserts the . -->
             <xsl:text>.</xsl:text>
             <!-- get the maximum number of characters *after* the decimals in the current column -->
             <xsl:variable name="max-characters-after-decimal">

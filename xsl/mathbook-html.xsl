@@ -1963,7 +1963,7 @@ is just flat out on the page, as if printed there.
                     <!-- get the maximum number of characters *before* the decimals in the current column -->
                     <xsl:variable name="max-characters-before-decimal">
                         <xsl:call-template name="maximum-characters-before-decimal-in-column">
-                            <xsl:with-param name="column-cells" select="exsl:node-set(../row/cell[position()=$columnPos])"/>
+                          <xsl:with-param name="column-cells" select="exsl:node-set(ancestor::tabular/row/cell[position()=$columnPos])"/>
                         </xsl:call-template>
                     </xsl:variable>
                     <xsl:attribute name="style"><xsl:text>width:</xsl:text>
