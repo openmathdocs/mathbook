@@ -1604,49 +1604,47 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 <!-- decimal alignment in tabular environments -->
 <!-- decimal alignment in tabular environments -->
 <xsl:template name="maximum-characters-before-decimal-in-column">
-  <xsl:param name="cell"/>
-  <!-- column position of current td element -->
-  <xsl:variable name="columnPos" select="count($cell/preceding-sibling::cell)+1"/>
+  <!-- a node set containing the cells in the column to be measured -->
+  <xsl:param name="column-cells"/>
   <!-- maximum number of characters before decimal of selected cells that have the appropriate column position, 
         and that are numbers; this necessarily ignores text -->
   <xsl:variable name="max-characters-before-decimal">
-  <xsl:for-each select="../row/cell[position()=$columnPos][number(.)=.]">
+    <xsl:for-each select="exsl:node-set($column-cells[number(.)=.])">
       <xsl:sort select="string-length(substring-before(.,'.'))" data-type="number" order="ascending" />
       <xsl:if test="position() = last()">
         <xsl:value-of select="string-length(substring-before(.,'.'))"/>
       </xsl:if>
     </xsl:for-each>
   </xsl:variable>
-  <!-- get the maximum number of characters of numbers that *don't* contain decimals, e.g 12345 
-       This needs to be done separately from the calculation above, as we simply want the length of the character string,
-       not the length of a substring -->
+  <!-- get the maximum number of characters of numbers that *don't* contain decimals, e.g 12345
+  This needs to be done separately from the calculation above, as we simply want the length of the character string,
+  not the length of a substring -->
   <xsl:variable name="max-characters-before-decimal-no-decimals">
-  <xsl:for-each select="../row/cell[position()=$columnPos][not(contains(.,'.'))][number(.)=.]">
-      <xsl:sort select="string-length(.)" data-type="number" order="ascending" />
-      <xsl:if test="position() = last()">
-        <xsl:value-of select="string-length(.)"/>
-      </xsl:if>
+    <xsl:for-each select="exsl:node-set($column-cells[number(.)=.][not(contains(.,'.'))])">
+        <xsl:sort select="string-length(.)" data-type="number" order="ascending" />
+        <xsl:if test="position() = last()">
+            <xsl:value-of select="string-length(.)"/>
+        </xsl:if>
     </xsl:for-each>
   </xsl:variable>
   <!-- we need the maximum of the two previous calculations about the string *before* the decimal -->
   <xsl:choose>
     <xsl:when test="$max-characters-before-decimal &gt;$max-characters-before-decimal-no-decimals">
-        <xsl:value-of select="$max-characters-before-decimal"/>
+      <xsl:value-of select="$max-characters-before-decimal"/>
     </xsl:when>
     <xsl:otherwise>
-        <xsl:value-of select="$max-characters-before-decimal-no-decimals"/>
+      <xsl:value-of select="$max-characters-before-decimal-no-decimals"/>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
 
 <xsl:template name="maximum-characters-after-decimal-in-column">
-  <xsl:param name="cell"/>
-  <!-- column position of current td element -->
-  <xsl:variable name="columnPos" select="count($cell/preceding-sibling::cell)+1"/>
+  <!-- a node set containing the cells in the column to be measured -->
+  <xsl:param name="column-cells"/>
   <!-- maximum number of characters *after* decimal of selected cells that have the appropriate column position, 
         and that are numbers; this necessarily ignores text -->
   <xsl:variable name="max-characters-after-decimal">
-  <xsl:for-each select="../row/cell[position()=$columnPos][number(.)=.]">
+  <xsl:for-each select="exsl:node-set($column-cells[number(.)=.])">
       <xsl:sort select="string-length(substring-after(.,'.'))" data-type="number" order="ascending" />
       <xsl:if test="position() = last()">
         <xsl:value-of select="string-length(substring-after(.,'.'))"/>

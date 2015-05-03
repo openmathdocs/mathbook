@@ -1958,9 +1958,12 @@ is just flat out on the page, as if printed there.
               <xsl:when test="$alignment='.' and number($the-cell)=$the-cell">
                 <xsl:element name="span">
                     <xsl:attribute name="class">decimal</xsl:attribute>
+                    <!-- get the column position -->
+                    <xsl:variable name="columnPos" select="count($the-cell/preceding-sibling::cell)+1"/>
+                    <!-- get the maximum number of characters *before* the decimals in the current column -->
                     <xsl:variable name="max-characters-before-decimal">
                         <xsl:call-template name="maximum-characters-before-decimal-in-column">
-                            <xsl:with-param name="cell" select="$the-cell" />
+                            <xsl:with-param name="column-cells" select="exsl:node-set(../row/cell[position()=$columnPos])"/>
                         </xsl:call-template>
                     </xsl:variable>
                     <xsl:attribute name="style"><xsl:text>width:</xsl:text>

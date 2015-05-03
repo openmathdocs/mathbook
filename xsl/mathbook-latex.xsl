@@ -3075,6 +3075,10 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
         <xsl:when test="$align='right'">
             <xsl:text>r</xsl:text>
         </xsl:when>
+        <!-- decimal alignment -->
+        <xsl:when test="$align='.'">
+            <xsl:text>S[table-format=</xsl:text>
+        </xsl:when>
         <xsl:otherwise>
             <xsl:message>MBX:WARNING: tabular horizontal alignment attribute not recognized: use left, center, right</xsl:message>
         </xsl:otherwise>
