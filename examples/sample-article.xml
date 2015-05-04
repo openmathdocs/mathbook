@@ -1895,6 +1895,26 @@ the xsltproc executable.
                 </tabular>
                 <caption>Simply specify <c>halign='.'</c> to align columns at the decimal.</caption>
             </table>
+                <table>
+                <tabular top="major" halign="center">
+                    <col halign=","/>
+                    <col halign=","/>
+                    <row bottom="minor">
+                        <cell>  <m>i</m></cell>
+                        <cell><m>t_i</m></cell>
+                    </row>
+                    <row> <cell>12,1</cell><cell>-10000000001</cell></row>
+                    <row> <cell>3,34</cell><cell>1,12345</cell></row>
+                    <row> <cell>103,34</cell><cell bottom="major">-123456</cell></row>
+                    <row> <cell>101,1</cell><cell>10,1234</cell></row>
+                    <row> <cell>-101,1</cell><cell>-10,1234</cell></row>
+                    <row> <cell>12345</cell><cell>1234</cell></row>
+                    <row> <cell bottom="medium" right="major">123</cell><cell>1234</cell></row>
+                    <row> <cell>12</cell><cell>123</cell></row>
+                    <row> <cell>words</cell><cell>phrases</cell></row>
+                </tabular>
+                <caption>You can specify <c>halign=','</c> to align columns at the decimal which uses commas.</caption>
+            </table>
             </subsection>
         </section>
 
