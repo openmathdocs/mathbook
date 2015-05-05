@@ -1895,6 +1895,25 @@ the xsltproc executable.
                 </tabular>
                 <caption>Simply specify <c>halign='.'</c> to align columns at the decimal.</caption>
             </table>
+                <table>
+                <tabular top="major" halign="center">
+                    <col halign="."/>
+                    <col halign="."/>
+                    <row bottom="minor">
+                        <cell>  <m>i</m></cell>
+                        <cell><m>t_i</m></cell>
+                    </row>
+                    <row> <cell>0</cell><cell>93.50</cell></row>
+                    <row> <cell>1</cell><cell>46.75</cell></row>
+                    <row> <cell>2</cell><cell>23.38</cell></row>
+                    <row> <cell>3</cell><cell>11.69</cell></row>
+                    <row> <cell>4</cell><cell>5.84</cell></row>
+                    <row> <cell>5</cell><cell>2.92</cell></row>
+                    <row> <cell>6</cell><cell>1.46</cell></row>
+                    <row> <cell>7</cell><cell>0.73</cell></row>
+                    </tabular>
+                <caption>FIX FIX FIX</caption>
+            </table>
             <!--
                 <table>
                 <tabular top="major" halign="center">
