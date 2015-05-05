@@ -2960,7 +2960,16 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
                 <xsl:text>}</xsl:text>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:apply-templates select="$the-cell" />
+              <xsl:choose>
+                <xsl:when test="number($the-cell)=$the-cell">
+                    <xsl:apply-templates select="$the-cell" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>{</xsl:text>
+                    <xsl:apply-templates select="$the-cell" />
+                    <xsl:text>}</xsl:text>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:if test="$the-cell/following-sibling::cell">
