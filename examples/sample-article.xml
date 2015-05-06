@@ -1912,7 +1912,7 @@ the xsltproc executable.
                     <row> <cell>6</cell><cell>1.46</cell></row>
                     <row> <cell>7</cell><cell>0.73</cell></row>
                     </tabular>
-                <caption>FIX FIX FIX</caption>
+                    <caption/>
             </table>
             <!--
                 <table>

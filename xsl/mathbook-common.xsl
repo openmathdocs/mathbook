@@ -1629,7 +1629,7 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
   </xsl:variable>
   <!-- we need the maximum of the two previous calculations about the string *before* the decimal -->
   <xsl:choose>
-    <xsl:when test="$max-characters-before-decimal &gt;$max-characters-before-decimal-no-decimals">
+    <xsl:when test="($max-characters-before-decimal &gt;$max-characters-before-decimal-no-decimals ) or not(number($max-characters-before-decimal-no-decimals)=$max-characters-before-decimal-no-decimals) ">
       <xsl:value-of select="$max-characters-before-decimal"/>
     </xsl:when>
     <xsl:otherwise>
